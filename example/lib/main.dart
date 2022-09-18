@@ -1,52 +1,19 @@
-import 'dart:async';
-
 import 'package:android_broadcast_service/android_broadcast_service.dart';
+import 'package:android_broadcast_service/utils/configs.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+
+final plugin = AndroidBroadcastService();
 
 void main() {
   runApp(const MyApp());
 }
 
-class MyApp extends StatefulWidget {
-  const MyApp({Key? key}) : super(key: key);
-
-  @override
-  State<MyApp> createState() => _MyAppState();
+void onBroadcast(BroadcastType broadcastType) {
+  print('onBroadcast in app: $broadcastType');
 }
 
-class _MyAppState extends State<MyApp> {
-  String _platformVersion = 'Unknown';
-  final _androidBroadcastServicePlugin = AndroidBroadcastService();
-
-  @override
-  void initState() {
-    super.initState();
-    initPlatformState();
-  }
-
-  // Platform messages are asynchronous, so we initialize in an async method.
-  Future<void> initPlatformState() async {
-    String platformVersion;
-    // Platform messages may fail, so we use a try/catch PlatformException.
-    // We also handle the message potentially returning null.
-    try {
-      platformVersion =
-          await _androidBroadcastServicePlugin.getPlatformVersion() ??
-              'Unknown platform version';
-    } on PlatformException {
-      platformVersion = 'Failed to get platform version.';
-    }
-
-    // If the widget was removed from the tree while the asynchronous platform
-    // message was in flight, we want to discard the reply rather than calling
-    // setState to update our non-existent appearance.
-    if (!mounted) return;
-
-    setState(() {
-      _platformVersion = platformVersion;
-    });
-  }
+class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +23,19 @@ class _MyAppState extends State<MyApp> {
           title: const Text('Plugin example app'),
         ),
         body: Center(
-          child: Text('Running on: $_platformVersion\n'),
+          child: Column(
+            children: [
+              const Text('Plugin Example'),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                  onPressed: () {
+                    plugin.configure(
+                        const AndroidConfig(onBroadcast: onBroadcast));
+                    plugin.start();
+                  },
+                  child: const Text('Start')),
+            ],
+          ),
         ),
       ),
     );

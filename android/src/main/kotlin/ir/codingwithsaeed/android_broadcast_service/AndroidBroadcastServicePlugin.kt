@@ -28,12 +28,12 @@ class AndroidBroadcastServicePlugin : FlutterPlugin, MethodCallHandler {
         this.context = context
         channel = MethodChannel(
             binaryMessenger,
-            "android_broadcast_service_plugin",
+            "android_broadcast_service",
             JSONMethodCodec.INSTANCE
         )
         eventChannel = EventChannel(
             binaryMessenger,
-            "android_broadcast_service_plugin_event",
+            "android_broadcast_service_event",
             JSONMethodCodec.INSTANCE
         )
         channel.setMethodCallHandler(this)
