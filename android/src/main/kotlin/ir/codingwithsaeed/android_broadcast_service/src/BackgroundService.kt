@@ -55,12 +55,14 @@ class BackgroundService : Service() {
             applicationContext.getSystemService(Context.ALARM_SERVICE) as AlarmManager;
         alarmService.set(
             AlarmManager.ELAPSED_REALTIME,
-            SystemClock.elapsedRealtime() + 1000,
+            SystemClock.elapsedRealtime() + 500,
             restartServicePendingIntent
         );
+        this.toast("onTaskRemoved Called")
     }
 
     override fun onDestroy() {
+        this.toast("onDestroy Called")
         if (!ServiceTracker.getServiceIsManuallyStopped(this)) {
             ServiceTracker.startService(this)
             return
