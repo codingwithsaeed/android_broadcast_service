@@ -1,1 +1,14 @@
-<manifest package="ir.codingwithsaeed.android_broadcast_service"></manifest>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="ir.codingwithsaeed.android_broadcast_service">
+
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
+    <application>
+        <service android:name=".src.BackgroundService" />W
+
+        <receiver android:name=".src.broadcasts.ServiceBroadcastReceiver" />
+        <receiver android:name=".src.broadcasts.BootReceiver" />
+    </application>
+</manifest>
